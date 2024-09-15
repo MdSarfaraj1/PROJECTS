@@ -1,0 +1,77 @@
+body{
+    font-family: "Plus Jakarta Sans",sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container{
+    flex: 1;
+}
+.navbar{
+    height: 5rem;
+    width: 100%;
+}
+.fa-airbnb{
+    color: rgb(231, 95, 117);
+    font-size: 2.5rem;
+}
+.nav-link{
+    color:black !important;
+}
+.f-info{
+    height: 3rem;
+   background-color: rgb(245, 247, 248);
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+
+}
+.f-info-links a{
+    text-decoration: none;
+    color: black;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+    color: rgb(211, 101, 101);
+}
+/* ------------------------------------------------------------------------------------------- */
+/* for alllistings.ejs */
+.card {
+    border: 2px solid transparent; /* Added to avoid overlay issues */
+    margin-bottom: 2rem;
+    cursor: pointer; /* Ensures the card shows it's clickable */
+    transition: transform 0.2s; /* For smooth hover effect */
+}
+
+/* .card:hover {
+    transform: scale(1.02); /* Small zoom effect on hover */
+
+
+.card-img-top {
+    border-radius: 10px;
+}
+.card-body{
+    padding: 0;
+}
+.card-text{
+    font-weight: 500;
+}
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.3;
+    background-color: white;
+}
+/* ---------------------------------------------------------------- */
+/* for new.ejs */
+.add-btn{
+    background-color: rgb(250, 98, 98);
+    border: none;
+    border-radius: 5px;
+}
+/* for listings.ejs ----------------------------------------------------*/
+.show-big-image{
+    height: 70vh;
+}
+ 

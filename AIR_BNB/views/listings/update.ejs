@@ -1,0 +1,32 @@
+
+<% layout("/layouts/boilerplate.ejs")%>
+<div class="row">
+    <div class="col-8 offset-2"><br><br>
+    <h3>Update Listing</h3>
+    <form method="post" action="/listings/<%=data.id%>/update?_method=PATCH">
+        <div> <label for="title" class="form-label">Title</label>
+            <input type="text" value="<%=data.title%>" name="listings[title]" id="title" class="form-control">
+        </div>
+        <div><label for="image" class="form-label">Image</label>
+            <input type="text"value="<%=data.image.url%>"  name="listings[image]" id="image"   class="form-control">
+        </div>
+        <div><label for="description" class="form-label">Description</label>
+            <textarea name="listings[description[]"<%=data.description%> id="description" class="form-control"></textarea><br>
+        </div>
+        <div class="row ">
+            <div class="mb-3 col-4"><label for="price" class="form-label">Price</label>
+                <input type="number" name="listings[price]" value="<%=data.price%>" id="price" class="form-control">
+            </div>
+            <div class="col-8"><label for="location" class="form-label">Location</label>
+                <input type="text" name="listings[location]" value="<%=data.location%>" id="location" class="form-control">
+            </div>
+        </div>
+        
+        <div><label for="country" class="form-label">Country</label>
+            <input type="text" name="listings[country]"value="<%=data.country%>" id="country" class="form-control">
+        </div>
+     
+        <br><button class="add-btn">Update</button><br>
+    </form>
+</div>
+</div>
