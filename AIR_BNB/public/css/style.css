@@ -36,7 +36,7 @@ body{
 }
 /* ------------------------------------------------------------------------------------------- */
 /* for alllistings.ejs */
-.card {
+.card-listing {
     border: 2px solid transparent; /* Added to avoid overlay issues */
     margin-bottom: 2rem;
     cursor: pointer; /* Ensures the card shows it's clickable */

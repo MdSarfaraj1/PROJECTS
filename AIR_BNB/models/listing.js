@@ -1,5 +1,7 @@
 const mongoose=require("mongoose");
+const Review=require("./reviews.js");
 const listingSchema=new mongoose.Schema({
+    
     title:{
         type:String,
         required:true
@@ -7,18 +9,13 @@ const listingSchema=new mongoose.Schema({
     description:{
         type:String
     },
-    image:{
-        // type:String,
-        // set:(v)=>v===""?"https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp"
-        //                 :v// if v is empty then dafault link else v's value
-        filename:String,
-        url:{
-            type: String,
-            default:"https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8OXx8fGVufDB8fHx8fA%3D%3D"
+    image: {
+        filename: { type: String },
+        url: {
+          type: String,
+          set: (v) => v === "" ? "https://images.unsplash.com/photo-1618140052121-39fc6db33972?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bG9kZ2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60" : v
         }
-       
-
-    },
+      },
     price:{
         type:Number,
         min:1
@@ -31,7 +28,19 @@ const listingSchema=new mongoose.Schema({
     country:{
         type:String,
         required:true
+    },
+    reviews:[
+        {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Review"
     }
+]
 });
+// adding a post middleware for deleting all the reviews if the listing is been deleted
+listingSchema.post("findOneAndDelete",async(listing)=>{
+    if(listing){
+        await Review.deleteMany({_id:{$in:listing.reviews}});
+    }
+})
 const Listing=mongoose.model("Listing",listingSchema);
 module.exports=Listing;
