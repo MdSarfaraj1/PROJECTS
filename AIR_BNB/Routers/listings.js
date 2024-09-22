@@ -28,7 +28,6 @@ const validateListingSchema=(req,res,next)=>{
 
 // print all listings------------------------------------------------------------------
 router.get("/",wrap(async(req,res)=>{ //listings   // wrap is used to pass the error to error handling route
-    console.log(req.params)
     let allListings=await Listing.find({});
     res.render("listings/alllistings.ejs",{allListings});
 }));
@@ -46,24 +45,37 @@ router.get("/insert",(req,res)=>{  //    /listings/insert
     let newL=new Listing(req.body);     
     console.log(req.body);
   await  newL.save();
-    console.log(req.body);
+  req.flash("success","New Listings Created");
     res.redirect("/listings");     
     }
  ))
 //for individual listing's data-----------------------------------------------------
 router.get("/:id",wrap(async(req,res)=>{
-    let listings=await Listing.findById(req.params.id).populate("reviews");  // taking reviews via populate from  reviews collection
-    res.render("listings/listings.ejs",{data:listings});
+    let listing=await Listing.findById(req.params.id).populate("reviews");  // taking reviews via populate from  reviews collection
+   if(!listing)
+   {
+    req.flash("error","Invalid listing id message given by flash");
+    res.redirect("/listings");
+   }
+   else
+    res.render("listings/listings.ejs",{data:listing});
 }));
  
 //update listings______________________________________________________________________________
 router.get("/:id/update",wrap(async(req,res)=>{
    let data=await Listing.findById(req.params.id);
+   if(!data)
+    {
+     req.flash("error","Invalid listing id message given by flash");
+     res.redirect("/listings");
+    }
+    else
    res.render("listings/update.ejs",{data});
 }));
 router.patch("/:id/update",validateListingSchema,async (req,res)=>{
     console.log(req.body);
  await Listing.findByIdAndUpdate(req.params.id,{$set:req.body});
+ req.flash("success","listing updated");
    res.redirect("/listings");
 });
 //delete listing----------------------------------------------------------
@@ -72,6 +84,7 @@ router.get("/:id/delete",(req,res)=>{
 });
 router.delete("/:id/delete",wrap(async(req,res)=>{
    await Listing.findByIdAndDelete(req.params.id);
+   req.flash("success","Listing Deleted");
     res.redirect("/listings");
 }));
 

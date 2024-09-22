@@ -32,6 +32,7 @@ router.post("/",validateReviewSchema,wrap(async(req,res)=>{  // for creating rev
       listing.reviews.push(newReview);
       await newReview.save();
       await listing.save();
+      req.flash("success","New review added");
       res.redirect(`/listings/${id}`);
     
   }));
@@ -41,6 +42,7 @@ router.post("/",validateReviewSchema,wrap(async(req,res)=>{  // for creating rev
      await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});  //pull the reviewId from reviews array
       let result=await Review.findByIdAndDelete(reviewId);
       console.log(result);
+      req.flash("success","review deleted");
     res.redirect(`/listings/${id}`);
   }));
   module.exports=router; 

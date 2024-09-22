@@ -1,0 +1,15 @@
+<!--this file for flash message regarding succes key check app.js line 48
+and listing route line 48,49-->
+<%if(success && success.length){%> <!--a success is an arrAY    so its lenagth must be >0 to execute flash messages-->
+<div class="alert alert-success alert-dismissible fade show col-4 offset-4" role="alert">
+    <%=success%>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<%}%> 
+
+<%if(error && error.length){%> <!--a success is an arrAY    so its lenagth must be >0 to execute flash messages-->
+    <div class="alert alert-danger alert-dismissible fade show col-4 offset-4" role="alert">
+        <%=error%>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <%}%> 
