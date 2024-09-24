@@ -7,9 +7,12 @@ module.exports.joiListingSchemaValidation=joi.object({
         location:joi.string().required(),
         country:joi.string().required(),
         price:joi.number().min(0).required(),
-        image:joi.string().allow("") // empty string can be there // .optional() means  can be absent
+        image: joi.object({
+          filename: joi.string().allow(""),
+          url: joi.string().allow("")
+      }).required()  // empty string can be there // .optional() means the field itself can be absent
     // }).required()
-  });
+  }); 
 
 module.exports.joiReviewSchemaValidation=joi.object({
     comment:joi.string().required(),

@@ -3,90 +3,22 @@
 const express=require("express");
 const router=express.Router();
 const wrap=require("../utils/wrapAsync.js"); // taking the function for handling errors
-const Listing=require("../models/listing.js"); // requiring Listing model
 const Review=require("../models/reviews.js"); //  // requiring Review model
-const MyError=require("../utils/Error_class.js");
-const {joiListingSchemaValidation}=require("../joi_schema.js"); // taking the joi validation schema 
-
+const listingController=require("../CONTROLLERS/listings.js");
+const {isLoggedIn, checkOwnershipOfListing,validateListingSchema}=require("../middleware.js");
 //Joi validation functions-----------------------------------------------
-const validateListingSchema=(req,res,next)=>{
-    let {error}=joiListingSchemaValidation.validate(req.body);
-    if(error){
-        console.log("error")
-        let errmsg=error.details.map((el)=>el.message).join(",");
-        throw new MyError(400,errmsg);
-    }
-    else
-    {
-        console.log("no error") 
-        next();
-    }
-   
-};
 
-//----------------------------------------------
-
-// print all listings------------------------------------------------------------------
-router.get("/",wrap(async(req,res)=>{ //listings   // wrap is used to pass the error to error handling route
-    let allListings=await Listing.find({});
-    res.render("listings/alllistings.ejs",{allListings});
-}));
-//create new listings___________________________________________________________ 
-router.get("/insert",(req,res)=>{  //    /listings/insert
-    res.render("listings/new.ejs");
-  
- });
- router.post("/insert",validateListingSchema,wrap(async(req,res,next)=>{    //   /listings/insert
-            // let result=joiListingSchemaValidation.validate(req.body);  //checking that the incoming data validate the schema or not
-            // if(result.error){
-            //     throw new MyError(400,"This error is handled by joi");
-            // }
-    // the above is commented out because we have used validateListingSchema function as middleware to do the so
-    let newL=new Listing(req.body);     
-    console.log(req.body);
-  await  newL.save();
-  req.flash("success","New Listings Created");
-    res.redirect("/listings");     
-    }
- ))
+router.get("/",wrap(listingController.index));
+router.get("/insert",isLoggedIn,listingController.renderNewForm);
+router.post("/insert",validateListingSchema,wrap(listingController.addNewListing))
 //for individual listing's data-----------------------------------------------------
-router.get("/:id",wrap(async(req,res)=>{
-    let listing=await Listing.findById(req.params.id).populate("reviews");  // taking reviews via populate from  reviews collection
-   if(!listing)
-   {
-    req.flash("error","Invalid listing id message given by flash");
-    res.redirect("/listings");
-   }
-   else
-    res.render("listings/listings.ejs",{data:listing});
-}));
- 
+router.get("/:id",wrap(listingController.showListing));
 //update listings______________________________________________________________________________
-router.get("/:id/update",wrap(async(req,res)=>{
-   let data=await Listing.findById(req.params.id);
-   if(!data)
-    {
-     req.flash("error","Invalid listing id message given by flash");
-     res.redirect("/listings");
-    }
-    else
-   res.render("listings/update.ejs",{data});
-}));
-router.patch("/:id/update",validateListingSchema,async (req,res)=>{
-    console.log(req.body);
- await Listing.findByIdAndUpdate(req.params.id,{$set:req.body});
- req.flash("success","listing updated");
-   res.redirect("/listings");
-});
+router.get("/:id/update",isLoggedIn,checkOwnershipOfListing,wrap(listingController.renderUpdateForm));
+router.patch("/:id/update",isLoggedIn,checkOwnershipOfListing,validateListingSchema,listingController.update); 
 //delete listing----------------------------------------------------------
-router.get("/:id/delete",(req,res)=>{
-    res.render("listings/delete.ejs",{id:req.params.id});
-});
-router.delete("/:id/delete",wrap(async(req,res)=>{
-   await Listing.findByIdAndDelete(req.params.id);
-   req.flash("success","Listing Deleted");
-    res.redirect("/listings");
-}));
+router.get("/:id/delete",isLoggedIn,listingController.deleteForm);
+router.delete("/:id/delete",isLoggedIn,checkOwnershipOfListing,wrap(listingController.delete));
 
 
 module.exports=router;

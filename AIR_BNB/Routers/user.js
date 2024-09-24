@@ -1,50 +1,24 @@
 const express=require("express");
 const router=express.Router();
-const User=require("../models/user");
-const wrap=require("../utils/wrapAsync.js");
 const passport=require("passport");
+const wrap=require("../utils/wrapAsync.js");
+const { saveRedirectUrl } = require("../middleware.js");
+const userController=require("../CONTROLLERS/user.js");
 
 //signup-----------------------------------------------
-router.get("/signUp",async(req,res)=>{
-res.render("users/signup.ejs");
-});
-router.post("/signUp",wrap(async(req,res)=>{
-   try{
-      let {username,email,password}=req.body;
-      const newuser=new User({username,email}); // giving only email and userName as using passport-local
-   let registerUser=await User.register(newuser,password); // registering the user in database using passport-local-mongoose
-   console.log(registerUser);
-   req.flash("success","You are logged in");
-   res.redirect("/listings");
-   }catch(err){
-
-      req.flash("error",err.message);
-      res.redirect("/user/signUp");
-   }
-}));
+router.get("/signUp",userController.renderSignUpForm);
+router.post("/signUp",wrap(userController.signUp));
 //login-------------------------------------------------------------------
-router.get("/login",(req,res)=>{
-   res.render("users/login.ejs"); // express by default finds in views
-});
-router.post("/login",
-   passport.authenticate("local", {  // lacal refers to the local strategy means checking username and password only
-      //successRedirect: "/listings",
-      // successFlash: "Welcome back!",
-      failureRedirect: "/user/login",
-      failureFlash: "for using default messages just write true instead of this message",
-    }),
-   // if authentication failed then redirect to /user/login
-       wrap(async(req,res)=>{
-   try{
-      let {username,password}=req.body;
-      req.flash("success","you are succesfully logged in");
-      res.redirect("/listings");
-   }catch(err)
-   {
-      req.flash("error",err.message); // this will triggewred only if there any error occured inside try block
-      res.redirect("/user/login");
-   }
-}));
-
-
+router.get("/login",userController.renderLogInForm);
+router.post("/login",saveRedirectUrl, // passport automatically refresh the session after login so through this middleware we are checking
+                                       // if there is a redirect url is present inside the current session and accessing it if so
+passport.authenticate("local", {  // local refers to the local strategy means checking username and password only
+   //successRedirect: "/listings",
+   // successFlash: "Welcome back!",
+   failureRedirect: "/user/login", // if authentication failed then redirect to /user/login
+   failureFlash: "for using default messages just write true instead of this message",
+   }),
+wrap(userController.login));
+//log out----------------------------------------------------------------------------------------
+router.get("/logout",userController.logout)
 module.exports=router; 

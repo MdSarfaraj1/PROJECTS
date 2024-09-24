@@ -8,7 +8,7 @@
             <input type="text" value="<%=data.title%>" name="title" id="title" class="form-control">
         </div>
         <div><label for="image" class="form-label">Image</label>
-            <input type="text"  value="<%=data.image.url%>"  name="image" id="image"   class="form-control">
+            <input type="text"  value="<%=data.image.url%>"   name="image[url]" id="image"   class="form-control">
         </div>
         <div><label for="description" class="form-label">Description</label>
             <textarea name="description"<%=data.description%> id="description" required class="form-control"></textarea><br>

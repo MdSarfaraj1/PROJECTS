@@ -15,6 +15,7 @@ main()
 })
 const initialzeDb=async()=>{
     await Listing.deleteMany({});
+  //  indata.data=indata.data.map((obj)=>({...obj, owner:"66f07281e2a582c2e7903066"}));// used for adding owner fill to the data
     await Listing.insertMany(indata.data); // accesseing the data key of the indata object
     console.log("db is inisialized");
 };
