@@ -8,13 +8,12 @@ module.exports.index=async(req,res)=>{ //listings   // wrap is used to pass the 
 //create new listings___________________________________________________________ 
 module.exports.renderNewForm=(req,res)=>{  //    /listings/insert
     res.render("listings/new.ejs");}
+
 module.exports.addNewListing=async(req,res,next)=>{    //   /listings/insert
-    // let result=joiListingSchemaValidation.validate(req.body);  //checking that the incoming data validate the schema or not
-    // if(result.error){
-    //     throw new MyError(400,"This error is handled by joi");
-    // }
-// the above is commented out because we have used validateListingSchema function as middleware to do the so
+let url=req.file.path;
+let filename=req.file.filename;
 let newL=new Listing(req.body);  
+newL.image={filename,url};
 newL.owner=req.user._id;   // ADDING THE OWNER DETAILS
 await  newL.save();
 req.flash("success","New Listings Created");
@@ -28,7 +27,6 @@ module.exports.showListing=async(req,res)=>{
         path:"Rowner",
     }
   }).populate("owner");  // taking reviews and owner via populate from  reviews and user collection
-    console.log(listing);
     if(!listing)
    {
     req.flash("error","Invalid listing id message given by flash");
@@ -61,7 +59,7 @@ module.exports.renderUpdateForm=async(req,res)=>{
    module.exports.deleteForm=(req,res)=>{
     res.render("listings/delete.ejs",{id:req.params.id});
     }
-module.exports.delete=async(req,res)=>{
+module.exports.destroy=async(req,res)=>{
    await Listing.findByIdAndDelete(req.params.id);
    req.flash("success","Listing Deleted");
     res.redirect("/listings");

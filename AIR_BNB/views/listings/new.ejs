@@ -2,20 +2,20 @@
 <div class="row">
     <div class="col-8 offset-2"><br><br>
     <h3>Create New Listing</h3>
-    <form method="post" action="/listings/insert" class="needs-validation" novalidate> <!--novalidate is for disabling browser setting & class="needs-validation" is to for applying bootstrap's style for form validation--> 
+    <form method="post" action="/listings/insert" class="needs-validation" novalidate enctype="multipart/form-data"> <!--novalidate is for disabling browser setting & class="needs-validation" is to for applying bootstrap's style for form validation--> 
         <div> 
             <label for="title" class="form-label" >Title</label>
             <input type="text" placeholder="Enter the title"required name="title" id="title" class="form-control">
                 <div class="valid-feedback"> username is available</div><!--this class is for giving message while for valid things-->
                 <div class="invalid-feedback"> Please choose a username. </div><!-- this class for giving message for invalid things-->
         </div>
-        <div><label for="image" class="form-label">Image</label>
-            <input type="text" placeholder="enter image url" id="image"  name="image[url]"  class="form-control">
+        <div class="mb-3"><label for="image" class="form-label">Image</label>
+            <input type="file" placeholder="enter image url" id="image"  name="image[url]"  class="form-control">
         </div>
-        <div><label for="description" class="form-label">Description</label>
+        <div class="mb-3"><label for="description" class="form-label">Description</label>
             <textarea required name="description" id="description" placeholder="Enter description" class="form-control"></textarea><br>
         </div>
-        <div class="row ">
+        <div class="row mb-3">
             <div class="mb-3 col-4"><label for="price" class="form-label">Price</label>
                 <input   id="price" required name="price" placeholder="Enter the price"  class="form-control">
             </div>
@@ -24,7 +24,7 @@
             </div>
         </div>
         
-        <div><label for="country" class="form-label">Country</label>
+        <div class="mb-3"><label for="country" class="form-label">Country</label>
             <input type="text" required name="country" id="country" placeholder="Enter Country required name" class="form-control">
         </div>
      

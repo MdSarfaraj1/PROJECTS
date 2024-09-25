@@ -33,8 +33,11 @@
                     <div class="card col-5 ms-3 mb-3 mt-2">
                     <div class="card-body">
                         <div class="card-text">
-                            <p>Posted By <b><%=review.Rowner.username%></b></p>
-                            <p><%=review.comment%></p><p><%=review.rating%>stars</p></div>
+                            <p><b>@<%=review.Rowner.username%></b></p>
+                              <p class="starability-result" data-rating="<%=review.rating%>"> <!--showing stars as rating-->
+                            <p><%=review.comment%></p>
+                          
+                        </div>
                         <form method="post" action="/listings/<%=data._id%>/review/<%=review._id%>?_method=DELETE">
                             <button class="btn btn-sm btn-dark mb=1">Delete</button><!-- for deleting the review-->
                         </form><br>
@@ -45,13 +48,25 @@
             <%if(currentUser){%>
             <div class=" row mt-2"> <!-- for creating new review-->
                 <h4>Leave a Review</h4>
+                <b>Rating</b>
                 <form method="post" action="/listings/<%=data._id%>/review" class="needs-validation " novalidate>
-                    <label class="form-label" for="rating"><b>Rating</b></label>
-                    <input type="range" id="rating" min="0" max="5" class="form-range" name="rating"><br>
-                    <div>
+                        <fieldset class="starability-slot"> <!--for starability-->
+                        
+                            <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="1" checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="rating" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="rating" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="rating" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="rating" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="rating" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
                         <label for="comment" class="form-label"><b>Write comment</b></label>
-                    <textarea required id="comment" class="form-control " cols="50" rows="7"  name="comment"></textarea>
-                    <div class="invalid-feedback"> Please give some comment</div>
+                        <textarea required id="comment" class="form-control " cols="50" rows="7"  name="comment"></textarea>
+                        <div class="invalid-feedback"> Please give some comment</div>
                     </div>
                 <br><button class="btn btn-outline-dark">Submit</button>
                 </form>

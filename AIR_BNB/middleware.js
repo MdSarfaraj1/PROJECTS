@@ -6,8 +6,12 @@ const {joiListingSchemaValidation,joiReviewSchemaValidation}=require("./joi_sche
 const MyError=require("./utils/Error_class.js");
 
 module.exports.validateListingSchema=(req,res,next)=>{
+
     let {error}=joiListingSchemaValidation.validate(req.body);
     if(error){
+        if (req.file) {  // if the validation failed rremove the uploaded file 
+            fs.unlinkSync(req.file.path);  // Delete the file
+          }
         console.log("error")
         let errmsg=error.details.map((el)=>el.message).join(",");
         throw new MyError(400,errmsg);

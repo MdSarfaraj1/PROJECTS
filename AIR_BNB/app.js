@@ -1,3 +1,10 @@
+require("dotenv").config();//require("dotenv").config(); is used to load environment variables from a
+// .env file into the process.env object  
+if(process.env.NODE_ENV!="production") //dont upload on thrid party
+{
+    console.log(process.env.CLOUD_API_KEY);
+}
+
 const express=require("express");
 const mongoose=require("mongoose");
 const ejsMate=require("ejs-mate");
