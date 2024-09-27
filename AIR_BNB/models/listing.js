@@ -7,6 +7,10 @@ const listingSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    category:{
+        type:String,
+        enum:['pools','lakes','houseboats','trendings','mansions','hills','arctics','campings','apartments']
+    },
     description:{
         type:String
     },
@@ -36,6 +40,18 @@ const listingSchema=new mongoose.Schema({
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
+    },
+    geometry:{
+        type:
+        {
+            type:String,
+        enum:['Point'],
+        required:true
+        },
+        coordinates:{
+            type:[Number],
+            required:true
+        }
     }
 });
 // adding a post middleware for deleting all the reviews if the listing is been deleted

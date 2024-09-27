@@ -1,0 +1,59 @@
+ step  1:   
+ //  add the below code to the listing.js controller
+
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken=process.env.MAP_TOKEN
+const geocodingClient = mbxGeocoding({ accessToken:mapToken});
+ 
+===============================================================================================
+ step 2: //the below code will bring the coordinates from the mapbox  , write inside the route under which you want to show the map
+
+ let response=await geocodingClient.forwardGeocode({  //forwardgeocoding means address to coordinates
+    query: req.body.location ,
+    limit: 1
+  })
+  .send()
+
+  response.body.features[0].geometry;  // this will contain the coordnates  features is a array of different set of coordinates 
+  // as we are setting limit=1 in this case so mapbox will  send only one set of coordinate
+
+  newListing.geometry=response.body.features[0].geometry;
+
+===============================================================================================
+   step 3: // this below script will run first in the file where you want to insert the map 
+            // basically it will make available of env variables to the map.js as it will also run in the page at last     
+   <script>  
+   const mapToken="<%=process.env.MAP_TOKEN%>";
+    const coordinates=<%-JSON.stringify(data.geometry.coordinates)%>
+    </script>
+
+
+   // add this below div to the file where you want to insert the div
+<div id="map"> </div>
+
+// require the map.js 
+==============================================================================================
+
+step 4:  // written in map.js
+
+mapboxgl.accessToken = mapToken;// this mapToken  is coming from views\listings\listings.ejs lin no. 2 as we cant access the process.env directly in the public folder
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        center:coordinates, // starting position [lng, lat]. Note that lat must be set between -90 and 90
+        zoom: 9 // starting zoom
+    });
+
+    const marker=new mapboxgl.Marker({color:"red"})
+    .setLingLat(coordinates)
+    .setPopup(new mapboxgl.Popup({offset:25}))
+    .setHTML("<h3>HEllo world</h3>")
+    .addTo(map)
+================================================================================================
+step 5:
+// add this below links to the boilerplate 
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js">
+
+=====================================================================================
+inside the listing schema we have to add new field let called geometry
+and this field will be of type moongose GeoJSON , a starndard format of storing coordinates

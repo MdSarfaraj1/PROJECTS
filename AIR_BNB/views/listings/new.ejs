@@ -15,9 +15,22 @@
         <div class="mb-3"><label for="description" class="form-label">Description</label>
             <textarea required name="description" id="description" placeholder="Enter description" class="form-control"></textarea><br>
         </div>
+            <div class="dropdown form-label">
+                <label for="category">Choose Category</label>
+                <select id="category" name="category" class="form-select">
+                    <option value="pools">Pools</option>
+                    <option value="houseboats">Houseboats</option>
+                    <option value="trendings">Trendings</option>
+                    <option value="mantions">Mantions</option>
+                    <option value="hills">Hills</option>
+                    <option value="arctics">Arctics</option>
+                    <option value="campings">Campings</option>
+                    <option value="apartments">Apartments</option>
+                </select>
+           </div>
         <div class="row mb-3">
             <div class="mb-3 col-4"><label for="price" class="form-label">Price</label>
-                <input   id="price" required name="price" placeholder="Enter the price"  class="form-control">
+                <input type="number"  id="price" required name="price" placeholder="Enter the price"  class="form-control">
             </div>
             <div class="col-8"><label for="location" class="form-label">Location</label>
                 <input type="text" id="location" required name="location" placeholder="Enter Location" class="form-control">

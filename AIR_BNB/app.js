@@ -1,9 +1,9 @@
 require("dotenv").config();//require("dotenv").config(); is used to load environment variables from a
 // .env file into the process.env object  
-if(process.env.NODE_ENV!="production") //dont upload on thrid party
-{
-    console.log(process.env.CLOUD_API_KEY);
-}
+// if(process.env.NODE_ENV!="production") //dont upload on thrid party
+// {
+//     console.log(process.env.CLOUD_API_KEY);
+// }
 
 const express=require("express");
 const mongoose=require("mongoose");
@@ -14,6 +14,7 @@ const listingsRouter=require("./Routers/listings.js"); // requiring the router o
 const reviewRouter=require("./Routers/reviews.js");
 const userRouter=require("./Routers/user.js");
 const session=require("express-session");
+const MongoStore = require('connect-mongo');
 const flash=require("connect-flash");  // for creating flash messages
 const passport=require("passport");
 const localStrategy=require("passport-local");
@@ -27,22 +28,36 @@ app.engine("ejs",ejsMate);
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname,"public")));
-
+const MONGO_URL="mongodb://127.0.0.1:27017/airbnb"
+const ATLAS_CONNECT_URL=process.env.ATLAS_URL;
+const secret=process.env.SECRET;
 //database connction==========================================================================================
 async function main() 
 {
-    await mongoose.connect("mongodb://127.0.0.1:27017/airbnb");
+    await mongoose.connect(ATLAS_CONNECT_URL);
 }
 main()
 .then(()=>{  
-    console.log("connection established");
+    console.log("connection established"); 
 })
 .catch(()=>{
     console.log("connection failed");
 })
 //-------------------------------------------------------------
+const store= MongoStore.create({
+    mongoUrl:ATLAS_CONNECT_URL,
+    crypto:{
+       secret:secret,
+    },
+    touchAfter:24*60*60 // resave the session after 24 hours
+   });
+   store.on("error",()=>{
+    console.log("error in mongo atlas session store",err);
+   })
+
 const sessionOptions={  //for session
-    secret:"mysecret", // use to encrypt the session id coockie
+    store:store,
+    secret:secret, // use to encrypt the session id coockie
     resave:false,  //This determines whether the session should be 
                     //saved back to the store, even if it wasn’t modified during the request.
     saveUninitialized:true, //Uninitialized session: A session is uninitialized when it’s created but
@@ -52,6 +67,7 @@ const sessionOptions={  //for session
         maxAge:1000*60*60*24*7 // expiry date
     }
 };
+
 //========================================================================================================
 
 app.use(session(sessionOptions));  //you’re telling the app, “Use the session system!” The sessionOptions would be how long the pass is
@@ -94,9 +110,6 @@ app.use((req,res,next)=>{
 });
 //the above is for session and flash -------------------------------------------------------------------
 
-app.get("/",(req,res)=>{
-    res.send("hi i am groot");
-});
             // app.get("/demoUser",async(req,res)=>{ // practising 
             //     let newUser=new User({
             //         email:"md97@gmail.com",

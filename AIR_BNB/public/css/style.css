@@ -75,3 +75,8 @@ body{
     height: 70vh;
 }
  
+/*mAP*/
+#map{
+    height: 400px;
+    width:800px
+}

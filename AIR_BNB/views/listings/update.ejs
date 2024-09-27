@@ -3,15 +3,19 @@
 <div class="row">
     <div class="col-8 offset-2"><br><br>
     <h3>Update Listing</h3>
-    <form method="post" action="/listings/<%=data.id%>/update?_method=PATCH" class="needs-validation" novalidate>
+    <form method="post" action="/listings/<%=data.id%>/update?_method=PATCH" class="needs-validation" novalidate enctype="multipart/form-data">
         <div> <label for="title" class="form-label">Title</label>
             <input type="text" value="<%=data.title%>" name="title" id="title" class="form-control">
+        </div><br>
+        <div class="mb-3 "  >
+            Existing image:<br>
+            <img style="width: 20rem; height: 20rem;" src=" <%=originalImage%>">
         </div>
         <div><label for="image" class="form-label">Image</label>
-            <input type="text"  value="<%=data.image.url%>"   name="image[url]" id="image"   class="form-control">
+            <input type="file"   name="image[url]" id="image"   class="form-control">
         </div>
         <div><label for="description" class="form-label">Description</label>
-            <textarea name="description"<%=data.description%> id="description" required class="form-control"></textarea><br>
+            <textarea name="description"  id="description" required class="form-control"><%=data.description%></textarea><br>
         </div>
         <div class="row ">
             <div class="mb-3 col-4"><label for="price" class="form-label">Price</label>

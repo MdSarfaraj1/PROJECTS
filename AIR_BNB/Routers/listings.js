@@ -29,7 +29,7 @@ router.get("/:id",wrap(listingController.showListing));
 //update listings______________________________________________________________________________
 router.route("/:id/update")
 .get(isLoggedIn,checkOwnershipOfListing,wrap(listingController.renderUpdateForm))
-.patch(isLoggedIn,checkOwnershipOfListing,validateListingSchema,listingController.update); 
+.patch(isLoggedIn,checkOwnershipOfListing,upload.single('image[url]'),validateListingSchema,listingController.update); 
 
 //delete listing----------------------------------------------------------
 router.route("/:id/delete")

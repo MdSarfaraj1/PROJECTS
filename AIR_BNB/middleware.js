@@ -9,9 +9,6 @@ module.exports.validateListingSchema=(req,res,next)=>{
 
     let {error}=joiListingSchemaValidation.validate(req.body);
     if(error){
-        if (req.file) {  // if the validation failed rremove the uploaded file 
-            fs.unlinkSync(req.file.path);  // Delete the file
-          }
         console.log("error")
         let errmsg=error.details.map((el)=>el.message).join(",");
         throw new MyError(400,errmsg);
@@ -67,7 +64,6 @@ module.exports.saveRedirectUrl=(req,res,next)=>{  // USED FOR SAVING PRIGINALURL
 }
 
 module.exports.checkOwnershipOfListing=async(req,res,next)=>{
- 
     let listing=await Listing.findById(req.params.id);
     if(!listing.owner._id.equals(req.user._id))  // protecting while someone directly access the route
     {
@@ -77,7 +73,7 @@ module.exports.checkOwnershipOfListing=async(req,res,next)=>{
     next();
 } 
 module.exports.checkOwnershipOfReview=async(req,res,next)=>{
- 
+
     let review=await Review.findById(req.params.reviewId);
     if(!review.Rowner._id.equals(req.user._id))  // protecting while someone directly access the route
     {

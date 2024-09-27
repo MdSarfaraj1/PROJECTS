@@ -1,14 +1,13 @@
 const joi=require("joi");
 module.exports.joiListingSchemaValidation=joi.object({
     //for listing object 
-    // listings:joi.object({
-        title:joi.string().required(),
+     title:joi.string().required(),
         description:joi.string().required(),
         location:joi.string().required(),
         country:joi.string().required(),
         price:joi.number().min(0).required(),
-      // empty string can be there // .optional() means the field itself can be absent
-    // }).required()
+        category:joi.string(),
+        // empty string can be there // .optional() means the field itself can be absent
   }); 
 
 module.exports.joiReviewSchemaValidation=joi.object({

@@ -1,21 +1,115 @@
 <% layout("/layouts/boilerplate.ejs")%>
-<body>
-    <div class="row offset-1">
-      <h3> Listings</h3>
+<style>
+  .filters{
+    display: flex;
+    justify-content: space-around;
+  }
+  .filter{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    opacity: 0.7;
+  }
+  .filter:hover{
+    opacity: 1;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .filter p{
+    font-size:0.8rem;
+  }
+  .tax-info{
+    display: none;
+  }
+ .tax-switch{
+  border: 1px solid black;
+  border-radius: 3px;
+ }
+</style>
+  <div class="filters  mb-2" style="position: sticky; top: 100px; z-index: 1; background-color: rgb(255, 255, 255); height: 65px;"> <!--icons--> 
+      <div class="filter ">
+        <div><span class="material-symbols-outlined">
+          pool
+          </span></div>
+        <p>Amezing pools</p>
+      </div>
+      <div class="filter ">
+        <div><span class="material-symbols-outlined">
+          water
+          </span></div>
+        <p>Lakes</p>
+      </div>
+      <div class="filter ">
+        <div> <span class="material-symbols-outlined"> houseboat</span> </div>
+          <p>Houseboat</p>
+      </div>
+      <div class="filter ">
+          <div><span class="material-symbols-outlined"> local_fire_department </span> </div>
+          <p>Trending</p>
+        </div>
+        <div class="filter ">
+          <div><span class="material-symbols-outlined">castle</span></div>
+          <p>Mansion</p>
+        </div>
+        <div class="filter ">
+          <div><span class="material-symbols-outlined">
+            landscape_2
+            </span></div>
+          <p>Hills</p>
+        </div>
+        <div class="filter ">
+          <div><span class="material-symbols-outlined">
+            ac_unit
+            </span></div>
+          <p>Arctics</p>
+        </div>
+        <div class="filter mb-5">
+          <div><span class="material-symbols-outlined">
+            camping
+            </span></div>
+          <p>Camping</p>
+        </div>
+        <div class="filter mb-5">
+          <div><span class="material-symbols-outlined">
+            apartment
+            </span></div>
+          <p>Apartment</p>
+        </div>
+        <div class="tax-switch mt-2" style="height: 1.8rem;" >
+          <div class="form-check-reverse border form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Show taxes</label>
+          </div>
+        </div>
+  </div>
+      <div class="row  row-cols-lg-4 row-cols-md-2 row-cols-sm-1" >
          <%for( let Listings of allListings ){%>
-         <div class="card card-listing " style="width: 20rem;">
-      <a href="/listings/<%=Listings._id%>" style="text-decoration: none; color: inherit;">
-        <img src="<%=Listings.image.url%>" class="card-img-top" alt="listing_img" style="height: 18rem;" >
-        <div class="card-img-overlay">fdfdsfdf</div> <!--to place somthingover the image-->
-        <div class="card-body">
-          <p class="card-text"> 
+         <div class="card card-listing " >
+           <a href="/listings/<%=Listings._id%>" style="text-decoration: none; color: inherit;">
+           <img src="<%=Listings.image.url%>" class="card-img-top" alt="listing_img" style="height: 18rem;" >
+           <div class="card-img-overlay">fdfdsfdf</div> <!--to place somthingover the image-->
+           <div class="card-body">
+           <p class="card-text"> 
             <b><%=Listings.title%></b><br>
            Price: <%=Listings.price.toLocaleString('en-IN')%>/night
-        </p>
-        </div>
-    </a>
-    </div> 
-         <% }%>
+           <i class="tax-info">&nbsp; &nbsp; +18% GST </i>
+          </p>
+          </div>
+          </a>
+          </div> 
+          <% }%>
     </div>
-   
-    </body>
+   <script>
+    let priceToggle=document.getElementById('flexSwitchCheckDefault');
+    priceToggle.addEventListener('click',()=>{
+      console.log("i am back")
+      let tax_info=document.getElementsByClassName('tax-info');
+      for(info of tax_info){
+        if(info.style.display!="inline")
+        info.style.display="inline";
+      else
+      info.style.display="none"
+      }
+
+    })
+   </script>
