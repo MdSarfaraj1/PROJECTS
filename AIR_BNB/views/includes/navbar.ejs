@@ -40,11 +40,11 @@
             </div> -->
         <div class="navbar-nav ms-auto  mb-lg-0">
           <%if(!currentUser){%>
-            <a class="nav-link active" aria-current="page" href="http://localhost:8080/user/login"><b>Log in</b> </a>
-          <a class="nav-link" href="http://localhost:8080/user/signUp"><B>Sign Up</B></a>
+            <a class="nav-link active" aria-current="page" href="/user/login"><b>Log in</b> </a>
+          <a class="nav-link" href="/user/signUp"><B>Sign Up</B></a>
           <%}%>
           <%if(currentUser){%>
-          <a class="nav-link" href="http://localhost:8080/user/logout"><B>Log Out</B></a>
+          <a class="nav-link" href="/user/logout"><B>Log Out</B></a>
           <%}%>
          </div>
       </div>
