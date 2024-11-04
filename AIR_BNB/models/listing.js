@@ -9,7 +9,7 @@ const listingSchema=new mongoose.Schema({
     },
     category:{
         type:String,
-        enum:['pools','lakes','houseboats','trendings','mansions','hills','arctics','campings','apartments']
+        enum:['pools','lakes','houseboats','trendings','mansions','hills','arctics','campings','apartments'],
     },
     description:{
         type:String

@@ -1,9 +1,6 @@
 require("dotenv").config();//require("dotenv").config(); is used to load environment variables from a
 // .env file into the process.env object  
-// if(process.env.NODE_ENV!="production") //dont upload on thrid party
-// {
-//     console.log(process.env.CLOUD_API_KEY);
-// }
+
 
 const express=require("express");
 const mongoose=require("mongoose");
@@ -28,13 +25,13 @@ app.engine("ejs",ejsMate);
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname,"public")));
-const MONGO_URL="mongodb://127.0.0.1:27017/airbnb"
+const MONGO_URL="mongodb://127.0.0.1:27017/airbnb"  //local store 
 const ATLAS_CONNECT_URL=process.env.ATLAS_URL;
 const secret=process.env.SECRET;
 //database connction==========================================================================================
 async function main() 
 {
-    await mongoose.connect(ATLAS_CONNECT_URL);
+    await mongoose.connect(MONGO_URL);
 }
 main()
 .then(()=>{  
@@ -44,8 +41,8 @@ main()
     console.log("connection failed");
 })
 //-------------------------------------------------------------
-const store= MongoStore.create({
-    mongoUrl:ATLAS_CONNECT_URL,
+const store= MongoStore.create({  //for storing the session data
+    mongoUrl:MONGO_URL,
     crypto:{
        secret:secret,
     },
@@ -64,7 +61,7 @@ const sessionOptions={  //for session
                     // has not been modified (e.g., the user hasn’t logged in yet).
     cookie:{
         expires:Date.now()+7*24*60*60*1000,
-        maxAge:1000*60*60*24*7 // expiry date
+        maxAge:1000*60*60*24*7 // expiry date 
     }
 };
 
@@ -134,5 +131,5 @@ res.status(statusCode).render("error.ejs",{message});
 })
 
 app.listen(port,()=>{
-    console.log("listing on port 8080");
+    console.log("listing on port 8080"); 
 })  

@@ -11,9 +11,28 @@
             Existing image:<br>
             <img style="width: 20rem; height: 20rem;" src=" <%=originalImage%>">
         </div>
-        <div><label for="image" class="form-label">Image</label>
-            <input type="file"   name="image[url]" id="image"   class="form-control">
+        <div class="row">
+            <div class="mb-3 col-4 ">
+                Select New Image
+               <input type="file"   name="image[url]" id="image"   class="form-control">
+            </div>
+          <div class="dropdown offset-2 form-label mb-3 col-6 ml-3">
+            <label for="category">Choose Category</label>
+             <select id="category" name="category" class="form-select">
+                <option value="" disabled>Select a category</option> 
+                <option value="pools">Pools</option>
+                <option value="houseboats">Houseboats</option>
+                <option value="trendings">Trendings</option>
+                <option value="mantions">Mantions</option>
+                <option value="hills">Hills</option>
+                <option value="arctics">Arctics</option>
+                <option value="campings">Campings</option>
+                <option value="apartments">Apartments</option>
+                <option value="lakes">Lakes</option>
+             </select>
+            </div>
         </div>
+        
         <div><label for="description" class="form-label">Description</label>
             <textarea name="description"  id="description" required class="form-control"><%=data.description%></textarea><br>
         </div>
